@@ -19,6 +19,7 @@ class BowlingGameTest {
 
     @Test
     void testGameReachesEndState() {
+        final String errorText = "Match has ended";
         BowlingGame bowlingGame = new BowlingGame();
         IntStream.rangeClosed(1,BowlingGame.maxFrames).forEach(f->{
             bowlingGame.roll(2); //first
@@ -28,10 +29,10 @@ class BowlingGameTest {
         assertTrue(bowlingGame.isMatchEnded());
         try{
             bowlingGame.roll(4);
-            fail("Expected \"Match has ended\"");
+            fail("Expected "+errorText);
         }catch (IllegalStateException ex){
             assertEquals(IllegalStateException.class, ex.getClass());
-            assertEquals("Match has ended", ex.getMessage());
+            assertEquals(errorText, ex.getMessage());
         }
     }
 }
