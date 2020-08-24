@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BowlingGameTest {
 
@@ -21,11 +20,11 @@ class BowlingGameTest {
     @Test
     void testGameReachesEndState() {
         BowlingGame bowlingGame = new BowlingGame();
-        //10 frames with 2 bowls of each less than 10 should end game.
-        IntStream.rangeClosed(1,10).forEach(f->{
+        IntStream.rangeClosed(1,BowlingGame.maxFrames).forEach(f->{
             bowlingGame.roll(2); //first
             bowlingGame.roll(3); //second
         });
+        assertTrue(bowlingGame.isMatchEnded());
         try{
             bowlingGame.roll(4);
             fail("Expected \"Match has ended\"");
