@@ -20,8 +20,8 @@ public class Frame {
 
     /**
      * Create a frame for bowling, indicating if it is the last frame, which has special scoring rules
-     *
-     * @param isLastFrame
+     * note: should consider Polymorphism of a 'lastFrame' implementaiton
+     * @param isLastFrame last frame indicator for behaviour
      */
     public Frame(boolean isLastFrame) {
         frameScoreMap = new HashMap<>();
@@ -54,7 +54,10 @@ public class Frame {
      * @param score number of pins knocked down
      * @throws IllegalStateException This function was called in an incorrect state
      */
-    public void bowl(int score) throws IllegalStateException {
+    public void bowl(int score) throws IllegalStateException, IllegalArgumentException {
+        if (!canBowlAgain()) {
+            throw new IllegalStateException("Cannot bowl again for this frame");
+        }
         if (score < 0) {
             throw new IllegalArgumentException("Cannot bowl negative numbers of pins");
         }
@@ -72,21 +75,14 @@ public class Frame {
                     throw new IllegalArgumentException("Cannot Bowl More Than 10 pins total for a frame");
                 }
             }
-            if (bowlIdx == 2 && !isStrike() && !isSpare()) {
-                throw new IllegalArgumentException("Cannot Bowl More times without strike or spare");
-            }
             if (bowlIdx == 2 && isStrike()) {
                 // IF on the third ball, and the first was a strike, we need to check maximum when second isn't a strike
                 int secondBowl = frameScoreMap.get(1);
-                boolean secondBowlStrike = secondBowl == 10;
-                if (!secondBowlStrike && (secondBowl + score) > 10) {
+                if (!isLastFrameSecondStrike() && (secondBowl + score) > 10) {
                     throw new IllegalArgumentException("Cannot Bowl More Than 10 pins total for a frame");
                 }
             }
 
-        }
-        if (!canBowlAgain()) {
-            throw new IllegalStateException("Cannot bowl again for this frame");
         }
         frameScoreMap.put(this.bowlIdx, score);
         bowlIdx++;
@@ -107,11 +103,32 @@ public class Frame {
      * @return whether it is a strike
      */
     public boolean isStrike() {
-        //TODO final frame
         if (frameScoreMap.size() < 1) {
             return false;
         }
         return frameScoreMap.get(0) == 10;
+    }
+
+    /**
+     * if the last frame and a strike on the second ball
+     * @return whether it is a strike
+     */
+    public boolean isLastFrameSecondStrike() {
+        if (!lastFrame || frameScoreMap.size() < 2) {
+            return false;
+        }
+        return frameScoreMap.get(1) == 10;
+    }
+
+    /**
+     * if the last frame and a strike on the third ball
+     * @return whether it is a strike
+     */
+    public boolean isLastFrameThirdStrike() {
+        if (!lastFrame || frameScoreMap.size() < 3) {
+            return false;
+        }
+        return frameScoreMap.get(2) == 10;
     }
 
     /**
@@ -120,11 +137,7 @@ public class Frame {
      * @return whether it is a spare
      */
     public boolean isSpare() {
-        //TODO final frame
         if (frameScoreMap.size() < 2) {
-            return false;
-        }
-        if (frameScoreMap.get(0) == 10) {
             return false;
         }
         int total = frameScoreMap.get(0) + frameScoreMap.get(1);
