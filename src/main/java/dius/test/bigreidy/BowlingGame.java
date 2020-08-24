@@ -2,6 +2,7 @@ package dius.test.bigreidy;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BowlingGame {
 
@@ -66,5 +67,19 @@ public class BowlingGame {
                 .map(Frame::getScore)
                 .reduce(Integer::sum)
                 .orElse(0);
+    }
+
+
+    /**
+     * Visual printer of the Frame.
+     * @return formatted output of the frame
+     */
+    public String getPrintFriendlyText() {
+        String values = frameMap.values().stream()
+                .map(Frame::getPrintFriendlyText)
+                .map(f-> "["+f+"]")
+                .collect(Collectors.joining("\n"));
+        if(isMatchEnded()) values = values + "\n Match Ended";
+        return values;
     }
 }

@@ -24,6 +24,7 @@ class BowlingGameTest {
             bowlingGame.roll(2); //first
             bowlingGame.roll(3); //second
         });
+        System.out.println(bowlingGame.getPrintFriendlyText());
         assertTrue(bowlingGame.isMatchEnded());
         try{
             bowlingGame.roll(4);

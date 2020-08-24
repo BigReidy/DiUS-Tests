@@ -2,6 +2,8 @@ package dius.test.bigreidy;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 /**
  * Frame class will keep track and manage each frame of bowling.
@@ -28,21 +30,20 @@ public class Frame {
 
     /**
      * Check if we can record more scores, on the last frame we can record 3 if they strike twice
-     *
-     * @return
+     * @return whether you can take another bowl this Frame
      */
     public boolean canBowlAgain() {
-        if (!lastFrame && bowlIdx < 2) {
-            if (isStrike()) {
-                return false;
+        if (lastFrame ) {
+            if(!isStrike() && !isSpare()){
+                //If you get a strike or spare, you get all 3 roles, therefore, if neither, only 2 rolls
+                return bowlIdx < 2;
             }
-            return true;
+            return bowlIdx < 3;
         }
-        if (lastFrame && bowlIdx < 3) {
-            //TODO logic around 3rd strike score
-            return true;
+        if (isStrike()) {
+            return false;
         }
-        return false;
+        return bowlIdx < 2;
     }
 
     /**
@@ -99,5 +100,17 @@ public class Frame {
         }
         int total = frameScoreMap.get(0) + frameScoreMap.get(1);
         return total == 10;
+    }
+
+    /**
+     * Visual printer of the Frame.
+     * @return formatted output of the frame
+     */
+    public String getPrintFriendlyText() {
+        if(isStrike()) return "X";
+        if(isSpare()) return frameScoreMap.get(0)+",\\";
+        String values = frameScoreMap.values().stream().map(Object::toString).collect(Collectors.joining(","));
+        if(canBowlAgain()) return values + ", ";
+        return values;
     }
 }
