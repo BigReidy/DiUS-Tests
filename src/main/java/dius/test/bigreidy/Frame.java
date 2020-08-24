@@ -33,6 +33,9 @@ public class Frame {
      */
     public boolean canBowlAgain() {
         if (!lastFrame && bowlIdx < 2) {
+            if (isStrike()) {
+                return false;
+            }
             return true;
         }
         if (lastFrame && bowlIdx < 3) {
@@ -68,4 +71,33 @@ public class Frame {
                 .orElse(0);
     }
 
+    /**
+     * if the first bowl of a frame is a 10 (all pins), it is a strike
+     *
+     * @return whether it is a strike
+     */
+    public boolean isStrike() {
+        //TODO final frame
+        if (frameScoreMap.size() < 1) {
+            return false;
+        }
+        return frameScoreMap.get(0) == 10;
+    }
+
+    /**
+     * if both the bowls of a standard frame is 10 (all pins knocked down over 2 bowls), it is a spare
+     *
+     * @return whether it is a spare
+     */
+    public boolean isSpare() {
+        //TODO final frame
+        if (frameScoreMap.size() < 2) {
+            return false;
+        }
+        if (frameScoreMap.get(0) == 10) {
+            return false;
+        }
+        int total = frameScoreMap.get(0) + frameScoreMap.get(1);
+        return total == 10;
+    }
 }
