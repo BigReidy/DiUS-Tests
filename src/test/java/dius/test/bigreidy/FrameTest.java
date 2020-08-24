@@ -17,8 +17,8 @@ class FrameTest {
         frame.bowl(secondScore);
         List<Integer> frameScore = frame.getScores();
         assertEquals(2, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0));
-        assertEquals(secondScore,frameScore.get(1));
+        assertEquals(firstScore, frameScore.get(0));
+        assertEquals(secondScore, frameScore.get(1));
     }
 
     /**
@@ -44,7 +44,7 @@ class FrameTest {
         frame.bowl(firstScore);
         List<Integer> frameScore = frame.getScores();
         assertEquals(1, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0) );
+        assertEquals(firstScore, frameScore.get(0));
         assertFalse(frame.isSpare());
         assertFalse(frame.isStrike());
         assertTrue(frame.canBowlAgain());
@@ -63,8 +63,8 @@ class FrameTest {
         frame.bowl(secondScore);
         List<Integer> frameScore = frame.getScores();
         assertEquals(2, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0));
-        assertEquals(secondScore,frameScore.get(1) );
+        assertEquals(firstScore, frameScore.get(0));
+        assertEquals(secondScore, frameScore.get(1));
         assertTrue(frame.isSpare());
         assertFalse(frame.isStrike());
         assertFalse(frame.canBowlAgain());
@@ -82,7 +82,7 @@ class FrameTest {
         frame.bowl(firstScore);
         List<Integer> frameScore = frame.getScores();
         assertEquals(1, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0));
+        assertEquals(firstScore, frameScore.get(0));
         assertTrue(frame.isStrike());
         assertFalse(frame.isSpare());
         assertFalse(frame.canBowlAgain());
@@ -100,8 +100,8 @@ class FrameTest {
         frame.bowl(secondScore);
         List<Integer> frameScore = frame.getScores();
         assertEquals(2, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0));
-        assertEquals(secondScore,frameScore.get(1) );
+        assertEquals(firstScore, frameScore.get(0));
+        assertEquals(secondScore, frameScore.get(1));
         assertFalse(frame.isSpare());
         assertFalse(frame.isStrike());
         assertFalse(frame.canBowlAgain());
@@ -111,14 +111,14 @@ class FrameTest {
      * Sanity check - cannot bowl negative
      */
     @Test
-    public void testNegativeBowl(){
+    public void testNegativeBowl() {
         final String errorText = "Cannot bowl negative numbers of pins";
         Frame frame = new Frame(false);
         int negativeScore = -1;
-        try{
+        try {
             frame.bowl(negativeScore);
-            fail(String.format("Expected \"%s\"",errorText));
-        }catch (IllegalArgumentException ex){
+            fail(String.format("Expected \"%s\"", errorText));
+        } catch (IllegalArgumentException ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
         }
@@ -128,14 +128,14 @@ class FrameTest {
      * Sanity check - cannot bowl above 10
      */
     @Test
-    public void testMaximumPinSingle(){
+    public void testMaximumPinSingle() {
         final String errorText = "Cannot Bowl More Than 10 pins in a single bowl";
         Frame frame = new Frame(false);
         int singleMassiveScore = 11;
-        try{
+        try {
             frame.bowl(singleMassiveScore);
-            fail(String.format("Expected \"%s\"",errorText));
-        }catch (IllegalArgumentException ex){
+            fail(String.format("Expected \"%s\"", errorText));
+        } catch (IllegalArgumentException ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
         }
@@ -145,16 +145,16 @@ class FrameTest {
      * Sanity check - cannot bowl above 10 total pins (notLastFrame)
      */
     @Test
-    public void testMaximumPinTotal(){
+    public void testMaximumPinTotal() {
         final String errorText = "Cannot Bowl More Than 10 pins total for a frame";
         Frame frame = new Frame(false);
         int firstScore = 5;
         int secondScore = 6;
         frame.bowl(firstScore);
-        try{
+        try {
             frame.bowl(secondScore);
-            fail(String.format("Expected \"%s\"",errorText));
-        }catch (IllegalArgumentException ex){
+            fail(String.format("Expected \"%s\"", errorText));
+        } catch (IllegalArgumentException ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
         }
@@ -164,16 +164,16 @@ class FrameTest {
      * Sanity check last frame - cannot bowl above 10 total pins
      */
     @Test
-    public void testLastFrameMaximumPinTotal(){
+    public void testLastFrameMaximumPinTotal() {
         final String errorText = "Cannot Bowl More Than 10 pins total for a frame";
         Frame frame = new Frame(true);
         int firstScore = 5;
         int secondScore = 6;
         frame.bowl(firstScore);
-        try{
+        try {
             frame.bowl(secondScore);
-            fail(String.format("Expected \"%s\"",errorText));
-        }catch (IllegalArgumentException ex){
+            fail(String.format("Expected \"%s\"", errorText));
+        } catch (IllegalArgumentException ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
         }
@@ -183,7 +183,7 @@ class FrameTest {
      * Sanity check last frame - no third ball on no-strike/no-spare
      */
     @Test
-    public void testLastFrameNoThirdBall(){
+    public void testLastFrameNoThirdBall() {
         final String errorText = "Cannot bowl again for this frame";
         Frame frame = new Frame(true);
         int firstScore = 5;
@@ -192,10 +192,10 @@ class FrameTest {
         frame.bowl(firstScore);
         frame.bowl(secondScore);
         assertFalse(frame.canBowlAgain());
-        try{
+        try {
             frame.bowl(thirdScore);
-            fail(String.format("Expected \"%s\"",errorText));
-        }catch (IllegalStateException ex){
+            fail(String.format("Expected \"%s\"", errorText));
+        } catch (IllegalStateException ex) {
             assertEquals(IllegalStateException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
         }
@@ -205,7 +205,7 @@ class FrameTest {
      * Sanity check last frame - third ball on spare
      */
     @Test
-    public void testLastFrameThirdBallSpare(){
+    public void testLastFrameThirdBallSpare() {
         Frame frame = new Frame(true);
         int firstScore = 5;
         int secondScore = 5;
@@ -217,9 +217,9 @@ class FrameTest {
         assertFalse(frame.canBowlAgain());
         List<Integer> frameScore = frame.getScores();
         assertEquals(3, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0));
-        assertEquals(secondScore,frameScore.get(1) );
-        assertEquals(thirdScore,frameScore.get(2) );
+        assertEquals(firstScore, frameScore.get(0));
+        assertEquals(secondScore, frameScore.get(1));
+        assertEquals(thirdScore, frameScore.get(2));
     }
 
     /**
@@ -227,7 +227,7 @@ class FrameTest {
      * includes second ball on single strike
      */
     @Test
-    public void testLastFrameThirdBallSingleStrike(){
+    public void testLastFrameThirdBallSingleStrike() {
         Frame frame = new Frame(true);
         int firstScore = 10;
         int secondScore = 5;
@@ -240,9 +240,9 @@ class FrameTest {
         assertFalse(frame.canBowlAgain());
         List<Integer> frameScore = frame.getScores();
         assertEquals(3, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0));
-        assertEquals(secondScore,frameScore.get(1) );
-        assertEquals(thirdScore,frameScore.get(2) );
+        assertEquals(firstScore, frameScore.get(0));
+        assertEquals(secondScore, frameScore.get(1));
+        assertEquals(thirdScore, frameScore.get(2));
     }
 
     /**
@@ -250,7 +250,7 @@ class FrameTest {
      * includes second ball on single strike
      */
     @Test
-    public void testLastFrameThirdBallSingleStrikeTooBig(){
+    public void testLastFrameThirdBallSingleStrikeTooBig() {
         final String errorText = "Cannot Bowl More Than 10 pins total for a frame";
         Frame frame = new Frame(true);
         int firstScore = 10;
@@ -260,10 +260,10 @@ class FrameTest {
         assertTrue(frame.canBowlAgain());
         frame.bowl(secondScore);
         assertTrue(frame.canBowlAgain());
-        try{
+        try {
             frame.bowl(thirdScore);
-            fail(String.format("Expected \"%s\"",errorText));
-        }catch (IllegalArgumentException ex){
+            fail(String.format("Expected \"%s\"", errorText));
+        } catch (IllegalArgumentException ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
         }
@@ -273,7 +273,7 @@ class FrameTest {
      * Sanity check last frame - third ball on double Strike
      */
     @Test
-    public void testLastFrameThirdBallDoubleStrike(){
+    public void testLastFrameThirdBallDoubleStrike() {
         Frame frame = new Frame(true);
         int firstScore = 10;
         int secondScore = 10;
@@ -287,15 +287,16 @@ class FrameTest {
         assertFalse(frame.canBowlAgain());
         List<Integer> frameScore = frame.getScores();
         assertEquals(3, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0));
-        assertEquals(secondScore,frameScore.get(1) );
-        assertEquals(thirdScore,frameScore.get(2) );
+        assertEquals(firstScore, frameScore.get(0));
+        assertEquals(secondScore, frameScore.get(1));
+        assertEquals(thirdScore, frameScore.get(2));
     }
+
     /**
      * Sanity check last frame - all strikes
      */
     @Test
-    public void testLastFrameAllStrikes(){
+    public void testLastFrameAllStrikes() {
         Frame frame = new Frame(true);
         int firstScore = 10;
         int secondScore = 10;
@@ -312,8 +313,8 @@ class FrameTest {
         assertTrue(frame.isLastFrameThirdStrike());
         List<Integer> frameScore = frame.getScores();
         assertEquals(3, frameScore.size());
-        assertEquals(firstScore,frameScore.get(0));
-        assertEquals(secondScore,frameScore.get(1) );
-        assertEquals(thirdScore,frameScore.get(2) );
+        assertEquals(firstScore, frameScore.get(0));
+        assertEquals(secondScore, frameScore.get(1));
+        assertEquals(thirdScore, frameScore.get(2));
     }
 }

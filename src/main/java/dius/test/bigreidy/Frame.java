@@ -21,6 +21,7 @@ public class Frame {
     /**
      * Create a frame for bowling, indicating if it is the last frame, which has special scoring rules
      * note: should consider Polymorphism of a 'lastFrame' implementaiton
+     *
      * @param isLastFrame last frame indicator for behaviour
      */
     public Frame(boolean isLastFrame) {
@@ -111,6 +112,7 @@ public class Frame {
 
     /**
      * if the last frame and a strike on the second ball
+     *
      * @return whether it is a strike
      */
     public boolean isLastFrameSecondStrike() {
@@ -122,6 +124,7 @@ public class Frame {
 
     /**
      * if the last frame and a strike on the third ball
+     *
      * @return whether it is a strike
      */
     public boolean isLastFrameThirdStrike() {
@@ -149,10 +152,14 @@ public class Frame {
      *
      * @return formatted output of the frame
      */
-    public String getPrintFriendlyText() {
-        if (isStrike()) return "X";
-        if (isSpare()) return frameScoreMap.get(0) + ",\\";
-        String values = frameScoreMap.values().stream().map(Object::toString).collect(Collectors.joining(","));
+    protected String getPrintFriendlyText() {
+        String values = frameScoreMap.values().stream()
+                .map(f -> {
+                    if (f == 10) return "X";
+                    else return f;
+                })
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
         if (canBowlAgain()) return values + ", ";
         return values;
     }
