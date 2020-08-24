@@ -1,8 +1,9 @@
 package dius.test.bigreidy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 /**
@@ -61,16 +62,32 @@ public class Frame {
             throw new IllegalArgumentException("Cannot Bowl More Than 10 pins in a single bowl");
         }
         if (!lastFrame) {
-            if ((getScore() + score) > 10) {
+            if (bowlIdx == 1 && (frameScoreMap.get(0) + score) > 10) {
                 throw new IllegalArgumentException("Cannot Bowl More Than 10 pins total for a frame");
             }
         } else {
-            //TODO last frame shennanigans
+            if (bowlIdx == 1) {
+                // If on the second ball, and the first one's a strike, then we don't sum it
+                if (!isStrike() && (frameScoreMap.get(0) + score) > 10) {
+                    throw new IllegalArgumentException("Cannot Bowl More Than 10 pins total for a frame");
+                }
+            }
+            if (bowlIdx == 2 && !isStrike() && !isSpare()) {
+                throw new IllegalArgumentException("Cannot Bowl More times without strike or spare");
+            }
+            if (bowlIdx == 2 && isStrike()) {
+                // IF on the third ball, and the first was a strike, we need to check maximum when second isn't a strike
+                int secondBowl = frameScoreMap.get(1);
+                boolean secondBowlStrike = secondBowl == 10;
+                if (!secondBowlStrike && (secondBowl + score) > 10) {
+                    throw new IllegalArgumentException("Cannot Bowl More Than 10 pins total for a frame");
+                }
+            }
+
         }
         if (!canBowlAgain()) {
             throw new IllegalStateException("Cannot bowl again for this frame");
         }
-        //TODO deal with invalid score combinations (9,9) (1,10) etc.
         frameScoreMap.put(this.bowlIdx, score);
         bowlIdx++;
     }
@@ -80,10 +97,8 @@ public class Frame {
      *
      * @return sum of the scored values
      */
-    public int getScore() {
-        return frameScoreMap.values().stream()
-                .reduce(Integer::sum)
-                .orElse(0);
+    public List<Integer> getScores() {
+        return new ArrayList<>(frameScoreMap.values());
     }
 
     /**

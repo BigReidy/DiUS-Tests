@@ -63,10 +63,7 @@ public class BowlingGame {
      * @return total amount of points scored so far
      */
     public int score() {
-        return frameMap.values().stream()
-                .map(Frame::getScore)
-                .reduce(Integer::sum)
-                .orElse(0);
+        return 0;
     }
 
 
