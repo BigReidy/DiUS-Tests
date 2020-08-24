@@ -30,11 +30,12 @@ public class Frame {
 
     /**
      * Check if we can record more scores, on the last frame we can record 3 if they strike twice
+     *
      * @return whether you can take another bowl this Frame
      */
     public boolean canBowlAgain() {
-        if (lastFrame ) {
-            if(!isStrike() && !isSpare()){
+        if (lastFrame) {
+            if (!isStrike() && !isSpare()) {
                 //If you get a strike or spare, you get all 3 roles, therefore, if neither, only 2 rolls
                 return bowlIdx < 2;
             }
@@ -53,6 +54,19 @@ public class Frame {
      * @throws IllegalStateException This function was called in an incorrect state
      */
     public void bowl(int score) throws IllegalStateException {
+        if (score < 0) {
+            throw new IllegalArgumentException("Cannot bowl negative numbers of pins");
+        }
+        if (score > 10) {
+            throw new IllegalArgumentException("Cannot Bowl More Than 10 pins in a single bowl");
+        }
+        if (!lastFrame) {
+            if ((getScore() + score) > 10) {
+                throw new IllegalArgumentException("Cannot Bowl More Than 10 pins total for a frame");
+            }
+        } else {
+            //TODO last frame shennanigans
+        }
         if (!canBowlAgain()) {
             throw new IllegalStateException("Cannot bowl again for this frame");
         }
@@ -104,13 +118,14 @@ public class Frame {
 
     /**
      * Visual printer of the Frame.
+     *
      * @return formatted output of the frame
      */
     public String getPrintFriendlyText() {
-        if(isStrike()) return "X";
-        if(isSpare()) return frameScoreMap.get(0)+",\\";
+        if (isStrike()) return "X";
+        if (isSpare()) return frameScoreMap.get(0) + ",\\";
         String values = frameScoreMap.values().stream().map(Object::toString).collect(Collectors.joining(","));
-        if(canBowlAgain()) return values + ", ";
+        if (canBowlAgain()) return values + ", ";
         return values;
     }
 }

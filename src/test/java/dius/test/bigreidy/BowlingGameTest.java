@@ -29,7 +29,7 @@ class BowlingGameTest {
         assertTrue(bowlingGame.isMatchEnded());
         try{
             bowlingGame.roll(4);
-            fail("Expected "+errorText);
+            fail(String.format("Expected \"%s\"",errorText));
         }catch (IllegalStateException ex){
             assertEquals(IllegalStateException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());

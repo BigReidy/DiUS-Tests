@@ -107,12 +107,12 @@ class FrameTest {
      */
     @Test
     public void testNegativeBowl(){
-        final String errorText = "Cannot Bowl Negatives";
+        final String errorText = "Cannot bowl negative numbers of pins";
         Frame frame = new Frame(false);
         int negativeScore = -1;
         try{
             frame.bowl(negativeScore);
-            fail("Expected "+errorText);
+            fail(String.format("Expected \"%s\"",errorText));
         }catch (IllegalArgumentException ex){
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
@@ -124,12 +124,12 @@ class FrameTest {
      */
     @Test
     public void testMaximumPinSingle(){
-        final String errorText = "Cannot Bowl More Than 10 pins in a single frame";
+        final String errorText = "Cannot Bowl More Than 10 pins in a single bowl";
         Frame frame = new Frame(false);
         int singleMassiveScore = 11;
         try{
             frame.bowl(singleMassiveScore);
-            fail("Expected "+errorText);
+            fail(String.format("Expected \"%s\"",errorText));
         }catch (IllegalArgumentException ex){
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
@@ -148,7 +148,7 @@ class FrameTest {
         frame.bowl(firstScore);
         try{
             frame.bowl(secondScore);
-            fail("Expected "+errorText);
+            fail(String.format("Expected \"%s\"",errorText));
         }catch (IllegalArgumentException ex){
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals(errorText, ex.getMessage());
